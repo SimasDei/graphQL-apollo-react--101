@@ -4,23 +4,6 @@ import CollectionPreview from '../collection-preview/collection-preview.componen
 
 import './collections-overview.styles.scss';
 
-// client
-//   .query({
-//     query: gql`
-//       query {
-//         getCollectionsByTitle(title: "hats") {
-//           id
-//           title
-//           items {
-//             name
-//             price
-//           }
-//         }
-//       }
-//     `,
-//   })
-//   .then((res) => console.log(res));
-
 const CollectionsOverview = ({ collections }) => (
   <div className="collections-overview">
     {collections.map(({ id, ...otherCollectionProps }) => (
