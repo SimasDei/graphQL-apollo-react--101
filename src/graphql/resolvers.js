@@ -1,19 +1,38 @@
 import { gql } from 'apollo-boost';
 
-// schema
+import { addItemToCart } from './cart/cart.utils';
+
+/**
+ * @Schemas
+ */
 export const typeDefs = gql`
+  extend type Item {
+    quantity: Int
+  }
   extend type Mutation {
     ToggleCartHidden: Boolean!
+    AddItemToCart(item: Item!): [Item]
   }
 `;
 
+/**
+ * @Queries
+ */
 export const GET_CART_HIDDEN = gql`
   {
     cartHidden @client
   }
 `;
 
-// define mutations and queries
+export const GET_CART_ITEMS = gql`
+  {
+    cartItems @client
+  }
+`;
+
+/**
+ * @Mutations
+ */
 export const resolvers = {
   Mutation: {
     toggleCartHidden: (_root, _args, { cache }) => {
@@ -26,6 +45,20 @@ export const resolvers = {
       });
 
       return !cartHidden;
+    },
+    addItemToCart: (_root, { item }, { cache }) => {
+      const { cartItems } = cache.readQuery({
+        query: GET_CART_ITEMS,
+      });
+
+      const newCartItems = addItemToCart(cartItems, item);
+
+      cache.writeQuery({
+        query: GET_CART_ITEMS,
+        data: { cartItems: newCartItems },
+      });
+
+      return newCartItems;
     },
   },
 };
