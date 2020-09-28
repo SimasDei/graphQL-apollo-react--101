@@ -20,7 +20,7 @@ export const CartDropdownContainer = () => (
   <Mutation mutation={TOGGLE_CART_HIDDEN}>
     {(toggleCartHidden) => (
       <Query query={GET_CART_ITEMS}>
-        {({ data: cartItems }) => <CartDropdown cartItems={cartItems} toggleCartHidden={toggleCartHidden} />}
+        {({ data: { cartItems } }) => <CartDropdown cartItems={cartItems} toggleCartHidden={toggleCartHidden} />}
       </Query>
     )}
   </Mutation>
